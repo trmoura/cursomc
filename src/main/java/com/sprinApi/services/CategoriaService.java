@@ -13,7 +13,15 @@ public class CategoriaService {
 	private CategoriaRepository repo;
 
 	public Categoria buscar(Integer id) {
-		return repo.findOne(id);
+
+		Categoria categoria = repo.findOne(id);
+
+		if (categoria == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado para o  ID :" + id + " do Tipo: " + Categoria.class.getSimpleName());
+		}
+
+		return categoria;
 	}
 
 }
