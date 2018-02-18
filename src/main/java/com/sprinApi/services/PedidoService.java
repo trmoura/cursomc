@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.sprinApi.domain.Pedido;
 import com.sprinApi.repositories.PedidoRepository;
+import com.sprinApi.resources.exception.ObjectNotFoundException;
 
 @Service
 public class PedidoService {

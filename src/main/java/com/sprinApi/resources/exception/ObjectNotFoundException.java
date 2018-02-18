@@ -1,4 +1,4 @@
-package com.sprinApi.services;
+package com.sprinApi.resources.exception;
 
 public class ObjectNotFoundException extends RuntimeException {
 
