@@ -24,4 +24,7 @@ public class CategoriaService {
 		return categoria;
 	}
 
+	public Categoria insert(Categoria obj) {
+		return repo.save(obj);
+	}
 }
