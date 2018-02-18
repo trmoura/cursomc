@@ -15,6 +15,7 @@ import com.sprinApi.domain.Cliente;
 import com.sprinApi.domain.Endereco;
 import com.sprinApi.domain.Estado;
 import com.sprinApi.domain.EstadoPagamento;
+import com.sprinApi.domain.ItemPedido;
 import com.sprinApi.domain.Pagamento;
 import com.sprinApi.domain.PagamentoComBoleto;
 import com.sprinApi.domain.PagamentoComCartao;
@@ -26,6 +27,7 @@ import com.sprinApi.repositories.CidadeRepository;
 import com.sprinApi.repositories.ClienteRepository;
 import com.sprinApi.repositories.EnderecoRepository;
 import com.sprinApi.repositories.EstadoRepository;
+import com.sprinApi.repositories.ItemPedidoRepository;
 import com.sprinApi.repositories.PagamentoRepository;
 import com.sprinApi.repositories.PedidoRepository;
 import com.sprinApi.repositories.ProdutoRepository;
@@ -56,6 +58,9 @@ public class CursomcApplication implements CommandLineRunner {
 
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -122,5 +127,17 @@ public class CursomcApplication implements CommandLineRunner {
 		PedidoRepository.save(Arrays.asList(ped1, ped2));
 		pagamentoRepository.save(Arrays.asList(pagto1, pagto2));
 
+		ItemPedido ip1 = new ItemPedido(ped1, p1, new BigDecimal(0.0), 1, new BigDecimal(2000.00));
+		ItemPedido ip2 = new ItemPedido(ped1, p3, new BigDecimal(0.0), 2, new BigDecimal(80.00));
+		ItemPedido ip3 = new ItemPedido(ped2, p2, new BigDecimal(0.0), 1, new BigDecimal(800.00));
+
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+
+		itemPedidoRepository.save(Arrays.asList(ip1, ip2, ip3));
 	}
 }
