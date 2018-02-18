@@ -12,7 +12,7 @@ public class CategoriaService {
 	@Autowired
 	private CategoriaRepository repo;
 
-	public Categoria buscar(Integer id) {
+	public Categoria find(Integer id) {
 
 		Categoria categoria = repo.findOne(id);
 
@@ -25,6 +25,11 @@ public class CategoriaService {
 	}
 
 	public Categoria insert(Categoria obj) {
+		return repo.save(obj);
+	}
+
+	public Categoria update(Categoria obj) {
+		find(obj.getId());
 		return repo.save(obj);
 	}
 }
