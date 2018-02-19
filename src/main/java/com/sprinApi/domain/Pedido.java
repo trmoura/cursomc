@@ -1,6 +1,7 @@
 package com.sprinApi.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -78,6 +79,16 @@ public class Pedido implements Serializable {
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
+	}
+
+	public BigDecimal getValorTotal() {
+
+		BigDecimal soma = BigDecimal.ZERO;
+		for (ItemPedido i : this.itens) {
+			soma = soma.add(i.getSubTotal());
+		}
+
+		return soma;
 	}
 
 	@Override
