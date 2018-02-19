@@ -2,28 +2,45 @@ package com.sprinApi.dto;
 
 import java.io.Serializable;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.sprinApi.services.validation.ClienteInsert;
+
+@ClienteInsert
 public class ClienteNewDTO implements Serializable {
 
 	private static final long serialVersionUID = 5610310515410281420L;
 
+	@NotEmpty(message = "Preenchimento obrigatório.")
+	@Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres.")
 	private String nome;
 
+	@NotEmpty(message = "Preenchimento obrigatório.")
+	@Email(message = "Email inválido.")
 	private String email;
 
+	@NotEmpty(message = "Preenchimento obrigatório.")
 	private String documentoFiscal;
 
 	private Integer tipo;
 
+	@NotEmpty(message = "Preenchimento obrigatório.")
 	private String logradouro;
 
+	@NotEmpty(message = "Preenchimento obrigatório.")
 	private String numero;
 
 	private String complemento;
 
+	@NotEmpty(message = "Preenchimento obrigatório.")
 	private String bairro;
 
+	@NotEmpty(message = "Preenchimento obrigatório.")
 	private String cep;
 
+	@NotEmpty(message = "Preenchimento obrigatório.")
 	private String telefone1;
 
 	private String telefone2;
