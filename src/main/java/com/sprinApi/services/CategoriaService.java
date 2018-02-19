@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.sprinApi.domain.Categoria;
+import com.sprinApi.domain.Cliente;
 import com.sprinApi.dto.CategoriaDTO;
 import com.sprinApi.repositories.CategoriaRepository;
 import com.sprinApi.resources.exception.DataIntegrityException;
@@ -38,8 +39,13 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria obj) {
-		find(obj.getId());
-		return repo.save(obj);
+		Categoria newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return repo.save(newObj);
+	}
+
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
 	}
 
 	public void delete(Integer id) {
