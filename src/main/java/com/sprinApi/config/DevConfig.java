@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.sprinApi.services.DBService;
+import com.sprinApi.services.EmailService;
+import com.sprinApi.services.MockEmailService;
+import com.sprinApi.services.SmtpEmailService;
 
 @Configuration
 @Profile("dev")
@@ -17,7 +20,7 @@ public class DevConfig {
 	@Autowired
 	private DBService dbService;
 
-	@Value("$spring.jpa.hibernate.ddl-auto")
+	@Value("${spring.jpa.hibernate.ddl-auto}")
 	private String strategy;
 
 	@Bean
@@ -30,4 +33,8 @@ public class DevConfig {
 		return true;
 	}
 
+	@Bean
+	public EmailService emailService() {
+		return new SmtpEmailService();
+	}
 }
