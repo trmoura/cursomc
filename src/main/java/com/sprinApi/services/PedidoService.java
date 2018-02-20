@@ -10,6 +10,7 @@ import com.sprinApi.domain.EstadoPagamento;
 import com.sprinApi.domain.ItemPedido;
 import com.sprinApi.domain.PagamentoComBoleto;
 import com.sprinApi.domain.Pedido;
+import com.sprinApi.repositories.ClienteRepository;
 import com.sprinApi.repositories.ItemPedidoRepository;
 import com.sprinApi.repositories.PagamentoRepository;
 import com.sprinApi.repositories.PedidoRepository;
@@ -34,6 +35,9 @@ public class PedidoService {
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 
+	@Autowired
+	private ClienteRepository clienteRepository;
+
 	public Pedido find(Integer id) {
 
 		Pedido categoria = repo.findOne(id);
@@ -49,6 +53,7 @@ public class PedidoService {
 	public Pedido insert(Pedido obj) {
 		obj.setId(null);
 		obj.setDataPedido(new Date());
+		obj.setCliente(clienteRepository.findOne(obj.getCliente().getId()));
 		obj.getPagamento().setEstadoPagamento(EstadoPagamento.PENDENTE);
 		obj.getPagamento().setPedido(obj);
 
@@ -62,10 +67,12 @@ public class PedidoService {
 
 		for (ItemPedido ip : obj.getItens()) {
 			ip.setDesconto(BigDecimal.ZERO);
-			ip.setPreco(produtoRepository.findOne(ip.getProduto().getId()).getPreco());
+			ip.setProduto(produtoRepository.findOne(ip.getProduto().getId()));
+			ip.setPreco(ip.getProduto().getPreco());
 			ip.setPedido(obj);
 		}
 		itemPedidoRepository.save(obj.getItens());
+		System.out.println(obj);
 
 		return obj;
 
