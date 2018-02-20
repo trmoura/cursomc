@@ -38,6 +38,9 @@ public class PedidoService {
 	@Autowired
 	private ClienteRepository clienteRepository;
 
+	@Autowired
+	private EmailService emailService;
+
 	public Pedido find(Integer id) {
 
 		Pedido categoria = repo.findOne(id);
@@ -59,11 +62,11 @@ public class PedidoService {
 
 		if (obj.getPagamento() instanceof PagamentoComBoleto) {
 			PagamentoComBoleto pagto = (PagamentoComBoleto) obj.getPagamento();
-			boletoService.preencherPagamentoComBoleto(pagto, obj.getDataPedido());
+			this.boletoService.preencherPagamentoComBoleto(pagto, obj.getDataPedido());
 		}
 
 		obj = repo.save(obj);
-		pagamentoRepository.save(obj.getPagamento());
+		this.pagamentoRepository.save(obj.getPagamento());
 
 		for (ItemPedido ip : obj.getItens()) {
 			ip.setDesconto(BigDecimal.ZERO);
@@ -71,8 +74,9 @@ public class PedidoService {
 			ip.setPreco(ip.getProduto().getPreco());
 			ip.setPedido(obj);
 		}
-		itemPedidoRepository.save(obj.getItens());
-		System.out.println(obj);
+
+		this.itemPedidoRepository.save(obj.getItens());
+		this.emailService.sendOrderConfirmation(obj);
 
 		return obj;
 
