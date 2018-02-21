@@ -18,11 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.sprinApi.domain.Categoria;
 import com.sprinApi.domain.Cliente;
+import com.sprinApi.domain.Perfil;
 import com.sprinApi.dto.ClienteDTO;
 import com.sprinApi.dto.ClienteNewDTO;
+import com.sprinApi.resources.exception.AuthorizationException;
+import com.sprinApi.security.UserSS;
 import com.sprinApi.services.ClienteService;
+import com.sprinApi.services.UserService;
 
 @RestController
 @RequestMapping(value = "/clientes")
@@ -33,6 +36,12 @@ public class ClienteResource {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Cliente> find(@PathVariable Integer id) {
+
+		UserSS user = UserService.authenticated();
+
+		if (user == null || !user.hasRole(Perfil.ADM) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso Negado");
+		}
 
 		Cliente obj = service.find(id);
 
@@ -63,7 +72,7 @@ public class ClienteResource {
 
 		return ResponseEntity.ok().body(listDTO);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDTO) {
 		Cliente obj = service.fromDTO(objDTO);
@@ -72,7 +81,6 @@ public class ClienteResource {
 
 		return ResponseEntity.created(uri).build();
 	}
-
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDTO, @PathVariable Integer id) {
