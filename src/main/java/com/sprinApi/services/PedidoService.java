@@ -4,8 +4,12 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.sprinApi.domain.Cliente;
 import com.sprinApi.domain.EstadoPagamento;
 import com.sprinApi.domain.ItemPedido;
 import com.sprinApi.domain.PagamentoComBoleto;
@@ -15,7 +19,9 @@ import com.sprinApi.repositories.ItemPedidoRepository;
 import com.sprinApi.repositories.PagamentoRepository;
 import com.sprinApi.repositories.PedidoRepository;
 import com.sprinApi.repositories.ProdutoRepository;
+import com.sprinApi.resources.exception.AuthorizationException;
 import com.sprinApi.resources.exception.ObjectNotFoundException;
+import com.sprinApi.security.UserSS;
 
 @Service
 public class PedidoService {
@@ -79,6 +85,21 @@ public class PedidoService {
 		this.emailService.sendOrderConfirmation(obj);
 
 		return obj;
+
+	}
+
+	public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		UserSS user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationException("Acesso Negado");
+		}
+
+		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
+
+		Cliente cliente = clienteRepository.findOne(user.getId());
+		
+		return repo.findByCliente(cliente, pageRequest);
 
 	}
 
