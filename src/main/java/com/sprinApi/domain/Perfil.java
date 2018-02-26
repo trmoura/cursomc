@@ -2,7 +2,7 @@ package com.sprinApi.domain;
 
 public enum Perfil {
 
-	ADM(1, "ROLE_ADMIN"), CLIENTE(2, "ROLE_CLIENTE");
+	ADMIN(1, "ROLE_ADMIN"), CLIENTE(2, "ROLE_CLIENTE");
 
 	private int codigo;
 	private String descricao;

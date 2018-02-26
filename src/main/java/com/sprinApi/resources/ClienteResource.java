@@ -40,7 +40,7 @@ public class ClienteResource {
 
 		UserSS user = UserService.authenticated();
 
-		if (user == null || !user.hasRole(Perfil.ADM) && !id.equals(user.getId())) {
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
 			throw new AuthorizationException("Acesso Negado");
 		}
 
