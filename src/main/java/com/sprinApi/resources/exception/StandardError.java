@@ -3,18 +3,29 @@ package com.sprinApi.resources.exception;
 import java.io.Serializable;
 
 public class StandardError implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1774970578386379358L;
-
+	private Long timestamp;
 	private Integer status;
-	private String msg;
-	private Long timeStamp;
+	private String error;
+	private String message;
+	private String path;
 
-	public StandardError(Integer status, String msg, Long timeStamp) {
+	public StandardError(Long timestamp, Integer status, String error, String message, String path) {
 		super();
-		this.setStatus(status);
-		this.setMsg(msg);
-		this.setTimeStamp(timeStamp);
+		this.timestamp = timestamp;
+		this.status = status;
+		this.error = error;
+		this.message = message;
+		this.path = path;
+	}
+
+	public Long getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Long timestamp) {
+		this.timestamp = timestamp;
 	}
 
 	public Integer getStatus() {
@@ -25,20 +36,27 @@ public class StandardError implements Serializable {
 		this.status = status;
 	}
 
-	public Long getTimeStamp() {
-		return timeStamp;
+	public String getError() {
+		return error;
 	}
 
-	public void setTimeStamp(Long timeStamp) {
-		this.timeStamp = timeStamp;
+	public void setError(String error) {
+		this.error = error;
 	}
 
-	public String getMsg() {
-		return msg;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
 }
